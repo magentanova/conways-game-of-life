@@ -1,0 +1,12 @@
+{
+  "name": "conways_game_of_life",
+  "version": "1.0.0",
+  "description": "an implementation of conway's game of life",
+  "main": "index.js",
+  "scripts": {
+    "dev": "PORT=3003 node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "justin richards",
+  "license": "ISC"
+}
