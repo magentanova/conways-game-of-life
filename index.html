@@ -5,12 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Conway's Game of Life</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/favicon.ico">
     <link rel="stylesheet" type="text/css" media="screen" href="src/style.css">
 </head>
 <body>
     <div class="container">
         <h1>Conway's Game of Life</h1>
-        <canvas width=600 height=600></canvas>
+        <div class="description">
+            <p>1. Select some initial conditions, or just paint on the canvas</p> 
+            <p>2. Click GO, or hit the space bar, to set the universe in motion.</p>
+        </div>
+        <div class="canvas-and-controls">
+            <div class="controls">
+                <div class="initial-conditions">
+                    <h2>Initial Conditions</h2>
+                    <div>
+                        <div id="radio-group">
+                            <h3>Pattern</h3>
+                            <input name="pattern" type="radio" value="blank">blank<br>
+                            <input name="pattern" type="radio" value="stripes">stripes<br>
+                            <input name="pattern" type="radio" value="diagonals">diagonals<br>
+                            <input name="pattern" type="radio" value="thatch">thatch<br>
+                        </div>
+                        <label for="randomness">Randomness</label>
+                        <input type="number" name="randomness" id="randomness" min="0" value="0" step=".0001">
+                        <button id="initialize">Initialize</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="playback">
+                    <button id="go-stop">GO</button>
+                    <button id="zoom">zoom in</button>
+                    <p id="zoom-note">(Press ESC to zoom back out)</p>
+                </div>
+            </div>
+            <canvas width=600 height=600></canvas>
+            <div class="paintbrush-settings">
+                    <h2>Paintbrush</h2>
+                    <label for="brush-size">Brush Size</label>
+                    <input id="brush-size" name="brush-size" type="range" min="5" max="50" step="5">
+                </div>
+            </div>
     </div>
     <script src="src/app.js"></script>    
 </body>

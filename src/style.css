@@ -1,5 +1,6 @@
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    overflow: hidden;
 }
 
 
@@ -8,7 +9,67 @@ body {
     text-align: center;
 }
 
+.description {
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.description p {
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+canvas, .controls, .paintbrush-settings {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.paintbrush-settings {
+    margin-left: 2rem;
+}
+
+#brush-size {
+    display: block;
+    transform: rotate(90deg) translateX(50%);
+}
+
 canvas {
-    margin-top: 3rem;
     border: 2px solid #222;
+}
+
+.controls {
+    margin-right: 2rem;
+}
+
+.initial-conditions {
+    text-align: left;
+}
+
+.radio-group {
+    margin-bottom: 1rem;
+}
+
+input[type="radio"] {
+    margin-right: 1rem;
+}
+
+#randomness {
+    margin-top: 1rem;
+    width: 5em;
+}
+
+button {
+    display: block;
+    margin-top: 1rem;
+}
+
+hr {
+    margin: 1rem 0;
+}
+
+#zoom-note {
+    margin-top: 4px;
+    font-size: 12px;
+    text-align: left;
 }

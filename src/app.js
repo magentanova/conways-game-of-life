@@ -1,14 +1,37 @@
 const $ = sel => document.querySelector(sel)
+const $$ = sel => document.querySelectorAll(sel)
 
 // settings
-const CANVAS_HEIGHT = 600
-const CANVAS_WIDTH = 600
+const ZOOM_FACTOR = 3
+const CANVAS_HEIGHT = 792 / ZOOM_FACTOR
+const CANVAS_WIDTH = 1440 / ZOOM_FACTOR
+let PAINTBRUSH_SIZE = 10
+const COLORS = [null,null,"orange","crimson","red", "crimson","purple","indigo","blue"]
 
 // canvas
 const canvas = $("canvas")
 const ctx = canvas.getContext("2d")
+const canvasRect = canvas.getBoundingClientRect()
 canvas.height = CANVAS_HEIGHT
 canvas.width = CANVAS_WIDTH
+
+// ui els
+const brushSize = $("#brush-size")
+const patternChoices = $$('#radio-group input[type="radio"]')
+const initButton = $("#initialize")
+const randomnessInput = $("#randomness")
+const goStopButton = $("#go-stop")
+const zoomButton = $("#zoom")
+const patternCallbacks = {
+    stripes: (x,y) => x % 6 === 0,
+    diagonals: (x,y) => (x - y) % 6 === 0,
+    thatch: (x,y) => (x * y) % 6 === 0
+}
+
+// ui variables
+let playing = false
+// let randomness = 0
+// let seedCallback = (x,y) => false
 
 // generations
 const Generation = function(){
@@ -22,7 +45,7 @@ Generation.prototype = {
         return {
             x,
             y,
-            alive: this._cells[x][y]
+            alive: this._cells[x] ? this._cells[x][y] : null
         }
     },
     set: function(x,y,alive) {
@@ -34,9 +57,7 @@ Generation.prototype = {
 }
 let thisGeneration = new Generation()
 let nextGeneration = new Generation()
-
-// ui variables
-let playing = false
+let generationCount = 1
 
 function applyRules(cell) {
     const { x, y, alive } = cell
@@ -71,7 +92,7 @@ function applyRules(cell) {
         }
     }   
     if ( !alive ) {
-        // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+            // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         if ( liveNeighborCount === 3 ) {
             aliveNext = true
         }
@@ -91,10 +112,11 @@ function createNewGeneration() {
         }
     }
     thisGeneration = nextGeneration
-    paint(thisGeneration)
+    paintCanvas(thisGeneration)
+    generationCount ++
 }
 
-function paint(generation){
+function paintCanvas(generation){
     for (let x in generation.cells()) {
         for (let y in generation.cells(x)) {
             if (generation.get(x,y).alive) {
@@ -103,16 +125,33 @@ function paint(generation){
             else {
                 ctx.fillStyle = "#fff"
             }
+            // ctx.fillStyle = generation.get(x,y).alive || "#fff"
+            // ctx.fillStyle = fillStyle
             ctx.fillRect(x,y, 1, 1)
         }
     }
 }
 
-function seed(){
+function paintBlock(x,y,brushSize=1) {
+    ctx.fillStyle = "#222"
+    for (let pixelX = Math.floor(x - brushSize / 2); pixelX <= Math.floor(x + brushSize / 2); pixelX ++) {
+        for (let pixelY = Math.floor(y - brushSize / 2); pixelY <= Math.floor(y + brushSize / 2); pixelY ++) {
+            thisGeneration.set(pixelX,pixelY,true)
+        }
+    }
+    ctx.fillRect(Math.floor(x - brushSize / 2),Math.floor(y - brushSize / 2),brushSize - 1, brushSize - 1)
+}
+
+const sentence = "the quick brown fox jumped over the lazy cow"
+
+function seed(cb=(x,y) => false, randomFactor=0){
     for (let x=0; x < canvas.width; x ++) {
         for (let y=0; y < canvas.height; y ++) {
             let alive
-            if (Math.random() < .25) {
+            if (cb && cb(x,y)) {
+                alive = true
+            }
+            else if (Math.random() < randomFactor)   {
                 alive = true
             }
             else {
@@ -121,28 +160,106 @@ function seed(){
             thisGeneration.set(x,y,alive)
         }
     }
-    paint(thisGeneration)
+    paintCanvas(thisGeneration)
+}
+
+// initialization 
+
+$("#initialize").onclick = () => {
+    let seedCallback
+    for (let i = 0; i < patternChoices.length; i ++) {
+        const patternEl = patternChoices[i]
+        if (patternEl.checked) {
+            console.log(patternEl.value)
+            seedCallback = patternCallbacks[patternChoices[i].value]
+        }
+    }
+    const randomFactor = parseFloat($("#randomness").value)
+    console.log(seedCallback, randomFactor)
+    seed(seedCallback, randomFactor)
+}
+
+// playback
+const togglePlaying = () => {
+    if (!playing) {
+        intervalId = setInterval(createNewGeneration, 250)
+        goStopButton.innerHTML = "STOP"
+        playing = true
+    }
+    else {
+        clearInterval(intervalId)
+        goStopButton.innerHTML = "GO"
+        playing = false
+    }
 }
 
 window.addEventListener('keydown', e => {
     if (e.keyCode === 32) {
-        if (!playing) {
-            intervalId = setInterval(createNewGeneration, 500)
-            playing = true
-        }
-        else {
-            clearInterval(intervalId)
-            playing = false
-        }
+        e.preventDefault()
+        e.stopPropagation()
+        togglePlaying()
     }
 })
 
-seed()
+goStopButton.onclick = togglePlaying
 
-// seed the canvas with random cells
-// every N ms
-    // clear nextGeneration
-    // fill nextGeneration by applying rules to cells in thisGeneration
-    // thisGeneration = nextGeneration
-    // paint thisGeneration
+$("#zoom").onclick = () => {
+    canvas.style.zoom = ZOOM_FACTOR
+    canvas.scrollIntoView()
+    window.scrollTo({
+        left: canvasRect.left,
+    })
 
+    window.addEventListener("keydown", e => {
+        if (e.keyCode === 27) {
+            canvas.style.zoom = 1
+        }
+    })
+}
+
+// painting
+
+brushSize.onchange = e => PAINTBRUSH_SIZE = parseInt(e.target.value)
+
+canvas.addEventListener('mousedown', e => {
+    const onmousemove = e => {
+        var x = e.pageX - e.target.offsetLeft; 
+        var y = e.pageY - e.target.offsetTop; 
+        paintBlock(x,y,PAINTBRUSH_SIZE)
+    }
+    canvas.addEventListener('mousemove', onmousemove)
+    canvas.addEventListener('mouseup', e => {
+        canvas.removeEventListener('mousemove', onmousemove)
+    })
+})
+
+
+// NEXT draw the seed pattern
+
+
+// ALGORITHM
+
+    // seed the canvas with random cells
+    // every N ms
+        // clear nextGeneration
+        // fill nextGeneration by applying rules to cells in thisGeneration
+        // thisGeneration = nextGeneration
+        // paintCanvas thisGeneration
+
+
+
+// GOOD ONES
+
+    // sentence
+
+        // const sentence = "the quick brown fox jumped over the lazy cow"
+
+        //             const codeX = sentence[x % sentence.length].charCodeAt()
+        //             const codeY = sentence[y % sentence.length].charCodeAt()
+        //             if (codeX * codeY > 11550) {
+        //                 alive = true
+        //             }
+
+    // product + modulo + random
+
+        // if ((x * y) % 6 === 0 && Math.random() < .999)   {
