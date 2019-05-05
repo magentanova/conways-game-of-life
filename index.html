@@ -20,9 +20,15 @@
             <div class="controls">
                 <div class="initial-conditions">
                     <h2>Initial Conditions</h2>
+                    <div class="range-group">
                         <label for="world-size">World Size</label>
                         <input id="world-size" name="world-size" type="range" min="1" max="18" value="17" step="1">
-                        <div id="radio-group">
+                    </div>
+                    <div class="range-group">
+                        <label for="speed">Speed</label>
+                        <input id="speed" name="speed" type="range" min="0" max="750" value="750" step="250">
+                    </div>
+                    <div id="radio-group">
                             <h3>Pattern</h3>
                             <input name="pattern" type="radio" value="blank">blank<br>
                             <input name="pattern" type="radio" value="stripes">stripes<br>

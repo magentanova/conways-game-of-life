@@ -57,6 +57,15 @@ canvas {
     text-align: left;
 }
 
+.range-group {
+    display: flex;
+    justify-content: space-between
+}
+
+.range-group > * {
+    flex: 0 1 auto;
+}
+
 .radio-group {
     margin-bottom: 1rem;
 }

@@ -2,10 +2,11 @@ const $ = sel => document.querySelector(sel)
 const $$ = sel => document.querySelectorAll(sel)
 
 // settings
+let GENERATION_AGE = 250
+let PAINTBRUSH_SIZE = 10
 let ZOOM_FACTOR = 3
 let CANVAS_HEIGHT = 792 / ZOOM_FACTOR
 let CANVAS_WIDTH = 1440 / ZOOM_FACTOR
-let PAINTBRUSH_SIZE = 10
 const COLORS = [null,null,"orange","crimson","red", "crimson","purple","indigo","blue"]
 
 // canvas
@@ -177,6 +178,10 @@ $("#world-size").onchange = e => {
     initCanvas()
 }
 
+$("#speed").onchange = e => {
+    GENERATION_AGE = 1000 - parseInt(e.target.value)
+}
+
 $("#initialize").onclick = () => {
     let seedCallback
     for (let i = 0; i < patternChoices.length; i ++) {
@@ -194,7 +199,7 @@ $("#initialize").onclick = () => {
 // playback
 const togglePlaying = () => {
     if (!playing) {
-        intervalId = setInterval(createNewGeneration, 250)
+        intervalId = setInterval(createNewGeneration, GENERATION_AGE)
         goStopButton.innerHTML = "STOP"
         playing = true
     }
