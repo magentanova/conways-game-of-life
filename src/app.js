@@ -173,7 +173,7 @@ function seed(cb=(x,y) => false, randomFactor=0){
 // initialization 
 
 $("#world-size").onchange = e => {
-    ZOOM_FACTOR = 10 - parseInt(e.target.value)
+    ZOOM_FACTOR = 20 - parseInt(e.target.value)
     initCanvas()
 }
 
