@@ -48,6 +48,10 @@ canvas {
     margin-right: 2rem;
 }
 
+.canvas-and-controls h2 {
+    margin-top: 0;
+}
+
 .initial-conditions {
     text-align: left;
 }
