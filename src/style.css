@@ -29,6 +29,7 @@ body {
 canvas, .controls, .paintbrush-settings {
     display: inline-block;
     vertical-align: top;
+    image-rendering: pixelated;
 }
 
 .paintbrush-settings {
