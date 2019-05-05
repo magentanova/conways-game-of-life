@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="container">
+        <a href="https://github.com/magentanova/conways-game-of-life" id="source" target="_blank">[source]</a>
         <h1>Conway's Game of Life</h1>
         <div class="description">
             <p>1. Select some initial conditions, or just paint on the canvas</p> 
@@ -19,7 +20,8 @@
             <div class="controls">
                 <div class="initial-conditions">
                     <h2>Initial Conditions</h2>
-                    <div>
+                        <label for="world-size">World Size</label>
+                        <input id="world-size" name="world-size" type="range" min="1" max="8" value="7" step="1">
                         <div id="radio-group">
                             <h3>Pattern</h3>
                             <input name="pattern" type="radio" value="blank">blank<br>
@@ -28,15 +30,15 @@
                             <input name="pattern" type="radio" value="thatch">thatch<br>
                         </div>
                         <label for="randomness">Randomness</label>
-                        <input type="number" name="randomness" id="randomness" min="0" value="0" step=".0001">
+                        <input type="number" name="randomness" id="randomness" min="0" max=".5" value="0" step=".0001">
+                        <p class="note">Introduces slight flaws in the pattern. Try .0001 for some interesting behavior, or .5 for total chaos.</p>
                         <button id="initialize">Initialize</button>
-                    </div>
                 </div>
                 <hr>
                 <div class="playback">
                     <button id="go-stop">GO</button>
                     <button id="zoom">zoom in</button>
-                    <p id="zoom-note">(Press ESC to zoom back out)</p>
+                    <p class="note" id="zoom-note">(Press ESC to zoom back out)</p>
                 </div>
             </div>
             <canvas width=600 height=600></canvas>

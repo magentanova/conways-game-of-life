@@ -20,6 +20,12 @@ body {
     margin-bottom: 0;
 }
 
+#source {
+    position: absolute;
+    top: 25px;
+    right: 50px;
+}
+
 canvas, .controls, .paintbrush-settings {
     display: inline-block;
     vertical-align: top;
@@ -68,8 +74,9 @@ hr {
     margin: 1rem 0;
 }
 
-#zoom-note {
+.note {
     margin-top: 4px;
     font-size: 12px;
     text-align: left;
+    max-width: 250px;
 }

@@ -2,18 +2,24 @@ const $ = sel => document.querySelector(sel)
 const $$ = sel => document.querySelectorAll(sel)
 
 // settings
-const ZOOM_FACTOR = 3
-const CANVAS_HEIGHT = 792 / ZOOM_FACTOR
-const CANVAS_WIDTH = 1440 / ZOOM_FACTOR
+let ZOOM_FACTOR = 3
+let CANVAS_HEIGHT = 792 / ZOOM_FACTOR
+let CANVAS_WIDTH = 1440 / ZOOM_FACTOR
 let PAINTBRUSH_SIZE = 10
 const COLORS = [null,null,"orange","crimson","red", "crimson","purple","indigo","blue"]
 
 // canvas
 const canvas = $("canvas")
 const ctx = canvas.getContext("2d")
-const canvasRect = canvas.getBoundingClientRect()
-canvas.height = CANVAS_HEIGHT
-canvas.width = CANVAS_WIDTH
+let canvasRect
+const initCanvas = () => {
+    canvasRect = canvas.getBoundingClientRect()
+    CANVAS_HEIGHT = 792 / ZOOM_FACTOR
+    CANVAS_WIDTH = 1440 / ZOOM_FACTOR    
+    canvas.height = CANVAS_HEIGHT
+    canvas.width = CANVAS_WIDTH
+}
+initCanvas()
 
 // ui els
 const brushSize = $("#brush-size")
@@ -21,6 +27,7 @@ const patternChoices = $$('#radio-group input[type="radio"]')
 const initButton = $("#initialize")
 const randomnessInput = $("#randomness")
 const goStopButton = $("#go-stop")
+const worldSize = $("#world-size")
 const zoomButton = $("#zoom")
 const patternCallbacks = {
     stripes: (x,y) => x % 6 === 0,
@@ -165,6 +172,11 @@ function seed(cb=(x,y) => false, randomFactor=0){
 
 // initialization 
 
+$("#world-size").onchange = e => {
+    ZOOM_FACTOR = 10 - parseInt(e.target.value)
+    initCanvas()
+}
+
 $("#initialize").onclick = () => {
     let seedCallback
     for (let i = 0; i < patternChoices.length; i ++) {
@@ -233,10 +245,6 @@ canvas.addEventListener('mousedown', e => {
     })
 })
 
-
-// NEXT draw the seed pattern
-
-
 // ALGORITHM
 
     // seed the canvas with random cells
@@ -245,21 +253,3 @@ canvas.addEventListener('mousedown', e => {
         // fill nextGeneration by applying rules to cells in thisGeneration
         // thisGeneration = nextGeneration
         // paintCanvas thisGeneration
-
-
-
-// GOOD ONES
-
-    // sentence
-
-        // const sentence = "the quick brown fox jumped over the lazy cow"
-
-        //             const codeX = sentence[x % sentence.length].charCodeAt()
-        //             const codeY = sentence[y % sentence.length].charCodeAt()
-        //             if (codeX * codeY > 11550) {
-        //                 alive = true
-        //             }
-
-    // product + modulo + random
-
-        // if ((x * y) % 6 === 0 && Math.random() < .999)   {
