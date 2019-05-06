@@ -13,7 +13,7 @@
         <a href="https://github.com/magentanova/conways-game-of-life" id="source" target="_blank">[source]</a>
         <h1>Conway's Game of Life</h1>
         <div class="description">
-            <p>1. Select some initial conditions, or just paint on the canvas</p> 
+            <p>1. Select some initial conditions, or just paint on the canvas</p>
             <p>2. Click GO, or hit the space bar, to set the universe in motion.</p>
         </div>
         <div class="canvas-and-controls">
@@ -38,7 +38,10 @@
                         <label for="randomness">Randomness</label>
                         <input type="number" name="randomness" id="randomness" min="0" max=".5" value="0" step=".0001">
                         <p class="note">Introduces slight flaws in the pattern. Try .0001 for some interesting behavior, or .5 for total chaos.</p>
-                        <button id="initialize">Initialize</button>
+                        <div class="initialize-reset-group">
+                            <button id="initialize">Initialize</button>
+                            <button id="reset">Reset Canvas</button>
+                        </div>
                 </div>
                 <hr>
                 <div class="playback">
@@ -56,6 +59,6 @@
                 </div>
             </div>
     </div>
-    <script src="src/app.js"></script>    
+    <script src="src/app.js"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ let canvasRect
 const initCanvas = () => {
     canvasRect = canvas.getBoundingClientRect()
     CANVAS_HEIGHT = 792 / ZOOM_FACTOR
-    CANVAS_WIDTH = 1440 / ZOOM_FACTOR    
+    CANVAS_WIDTH = 1440 / ZOOM_FACTOR
     canvas.height = CANVAS_HEIGHT
     canvas.width = CANVAS_WIDTH
 }
@@ -30,6 +30,7 @@ const randomnessInput = $("#randomness")
 const goStopButton = $("#go-stop")
 const worldSize = $("#world-size")
 const zoomButton = $("#zoom")
+const resetButton = $("#reset")
 const patternCallbacks = {
     stripes: (x,y) => x % 6 === 0,
     diagonals: (x,y) => (x - y) % 6 === 0,
@@ -77,8 +78,8 @@ function applyRules(cell) {
                 continue
             }
             if ( thisGeneration.get(nx,ny).alive ) {
-                liveNeighborCount ++ 
-            } 
+                liveNeighborCount ++
+            }
         }
     }
 
@@ -98,7 +99,7 @@ function applyRules(cell) {
         if ( liveNeighborCount > 3 ) {
             aliveNext = false
         }
-    }   
+    }
     if ( !alive ) {
             // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
         if ( liveNeighborCount === 3 ) {
@@ -171,7 +172,7 @@ function seed(cb=(x,y) => false, randomFactor=0){
     paintCanvas(thisGeneration)
 }
 
-// initialization 
+// initialization
 
 $("#world-size").onchange = e => {
     ZOOM_FACTOR = 20 - parseInt(e.target.value)
@@ -182,17 +183,19 @@ $("#speed").onchange = e => {
     GENERATION_AGE = 1000 - parseInt(e.target.value)
 }
 
-$("#initialize").onclick = () => {
+resetButton.onclick = () => {
+    seed(null, 0)
+}
+
+initButton.onclick = () => {
     let seedCallback
     for (let i = 0; i < patternChoices.length; i ++) {
         const patternEl = patternChoices[i]
         if (patternEl.checked) {
-            console.log(patternEl.value)
             seedCallback = patternCallbacks[patternChoices[i].value]
         }
     }
     const randomFactor = parseFloat($("#randomness").value)
-    console.log(seedCallback, randomFactor)
     seed(seedCallback, randomFactor)
 }
 
@@ -220,7 +223,7 @@ window.addEventListener('keydown', e => {
 
 goStopButton.onclick = togglePlaying
 
-$("#zoom").onclick = () => {
+zoomButton.onclick = () => {
     canvas.style.zoom = ZOOM_FACTOR
     canvas.scrollIntoView()
     window.scrollTo({
@@ -240,8 +243,8 @@ brushSize.onchange = e => PAINTBRUSH_SIZE = parseInt(e.target.value)
 
 canvas.addEventListener('mousedown', e => {
     const onmousemove = e => {
-        var x = e.pageX - e.target.offsetLeft; 
-        var y = e.pageY - e.target.offsetTop; 
+        var x = e.pageX - e.target.offsetLeft;
+        var y = e.pageY - e.target.offsetTop;
         paintBlock(x,y,PAINTBRUSH_SIZE)
     }
     canvas.addEventListener('mousemove', onmousemove)

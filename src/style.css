@@ -96,6 +96,11 @@ hr {
     max-width: 250px;
 }
 
+.initialize-reset-group {
+    display: flex;
+    justify-content: space-around;
+}
+
 /* playback */
 
 #go-stop {
