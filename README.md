@@ -1,6 +1,6 @@
 ## Motivation 
 
-I wrote this implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for fun because I am very interested in the question of how complex self-organizing patterns emerge from far simpler conditions. It seems to me to be one of the most fundamental questions we can ask about our realities. Writing and observing Conway's Game seemed like a great way of exploring this problem on a personal level, on the smallest scale that I've been made aware of. 
+I wrote this implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) for fun because I am very interested in the question of how complex self-organizing patterns emerge from far simpler conditions. It seems to me to be one of the most fundamental questions we can ask about our reality. Writing and observing Conway's Game seemed like a great way of exploring this problem on a personal level, on the smallest scale that I've been made aware of. 
 
 ## How it works
 
