@@ -16,6 +16,6 @@ The game consists of a simple grid, with each cell on that grid marked as either
 
 From these simple rules, startling complexity emerges.
 
-# Working with the UI
+## Working with the UI
 
 Hopefully, this little interface is pretty self-explanatory. If it's your first go, you might try a small world size, maximum speed, a blank pattern, and a randomness factor of .5. Another suggestion: Pick a more structured pattern, such as "thatch", and apply a randomness factor of .0001. You can also eschew all those more programmatic starting patterns and just use your cursor to paint on a blank canvas, playing around with different brush sizes, and then seeing what happens when you bring that canvas to life. I recommend always using the "zoom" functionality to get a close look at what's happening.
